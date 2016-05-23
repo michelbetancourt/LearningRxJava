@@ -320,7 +320,7 @@ public class TestObservableBlocking extends AbstractTest {
             .doOnNext(uuid -> {
                 
                 // this part of the Observable will run in a thread 
-                observerThreadName();
+                showObserverThreadName();
                 
                 callSlowService();
                 
@@ -347,7 +347,7 @@ public class TestObservableBlocking extends AbstractTest {
         .doOnNext(uuid -> {
             
             // this part of the Observable will run in a thread 
-            observerThreadName();
+            showObserverThreadName();
             
             callSlowService();
         })
@@ -372,7 +372,7 @@ public class TestObservableBlocking extends AbstractTest {
         .observeOn(Schedulers.io())
         .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
-            observerThreadName();
+            showObserverThreadName();
             callSlowService();
         })
         .toBlocking()
@@ -396,7 +396,7 @@ public class TestObservableBlocking extends AbstractTest {
         .subscribeOn(Schedulers.io())
         .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
-            observerThreadName();
+            showObserverThreadName();
         })
         .toBlocking()
         .single();
@@ -419,7 +419,7 @@ public class TestObservableBlocking extends AbstractTest {
         .subscribeOn(Schedulers.io())
         .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
-            observerThreadName();
+            showObserverThreadName();
             callSlowService();
         })
         .toBlocking()

@@ -285,7 +285,7 @@ public class TestObservableSubscribe extends AbstractTest {
             .observeOn(Schedulers.io())
             .doOnNext(uuid -> {
                 // this part of the Observable will run in a thread 
-                observerThreadName();
+                showObserverThreadName();
                 callSlowService();
             });
             
@@ -307,7 +307,7 @@ public class TestObservableSubscribe extends AbstractTest {
         })
         .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
-            observerThreadName();
+            showObserverThreadName();
             callSlowService();
         }).subscribe();
             
@@ -329,7 +329,7 @@ public class TestObservableSubscribe extends AbstractTest {
         .observeOn(Schedulers.io())
         .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
-            observerThreadName();
+            showObserverThreadName();
             callSlowService();
         }).subscribe();
             
@@ -352,7 +352,7 @@ public class TestObservableSubscribe extends AbstractTest {
         .subscribeOn(Schedulers.io())
         .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
-            observerThreadName();
+            showObserverThreadName();
         }).subscribe();
             
         watch.stop();
@@ -373,7 +373,7 @@ public class TestObservableSubscribe extends AbstractTest {
         .subscribeOn(Schedulers.io())
         .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
-            observerThreadName();
+            showObserverThreadName();
             callSlowService();
         }).subscribe();
             

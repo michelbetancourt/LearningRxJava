@@ -46,7 +46,7 @@ public abstract class AbstractTest {
         System.out.println(">" + testName() + " (callable)-> " + Thread.currentThread());
     }
     
-    protected void observerThreadName() {
+    protected void showObserverThreadName() {
         System.out.println(">" + testName() + " (observer)-> " + Thread.currentThread());
     }
     
