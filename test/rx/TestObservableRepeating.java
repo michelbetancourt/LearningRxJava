@@ -128,7 +128,7 @@ public class TestObservableRepeating extends AbstractTest {
             });
         })
         .repeat(repeatingCount)
-        .map(guid -> guid.toString())
+        .map(uuid -> uuid.toString())
         .toList()
         .toBlocking()
         .single();
@@ -153,9 +153,9 @@ public class TestObservableRepeating extends AbstractTest {
             });
         })
         .repeat(repeatingCount)
-        .map(guid -> {
+        .map(uuid -> {
             throwTestException("This line is not reached since the Observable will not return any elements");
-            return guid.toString();
+            return uuid.toString();
         })
         .toList()
         .toBlocking()
@@ -182,9 +182,9 @@ public class TestObservableRepeating extends AbstractTest {
                 });
             })
             .repeat(repeatingCount)
-            .map(guid -> {
+            .map(uuid -> {
                 throwTestException("This line is not reached since the Observable will not return any elements");
-                return guid.toString();
+                return uuid.toString();
             })
             .toList()
             .toBlocking()
@@ -209,14 +209,14 @@ public class TestObservableRepeating extends AbstractTest {
         strings = Observable.defer(() -> {
             return Observable.fromCallable(() -> {
                 
-                callableThreadName();
+                showCallableThreadName();
                 callSlowService();
                 
                 return UUID.randomUUID();
             }).subscribeOn(Schedulers.io());
         })
         .repeat(repeatingCount)
-        .map(guid -> guid.toString())
+        .map(uuid -> uuid.toString())
         .toList()
         .toBlocking()
         .single();
@@ -235,14 +235,14 @@ public class TestObservableRepeating extends AbstractTest {
         strings = Observable.defer(() -> {
             return Observable.fromCallable(() -> {
                 
-                callableThreadName();
+                showCallableThreadName();
                 callSlowService();
                 
                 return UUID.randomUUID();
             }).observeOn(Schedulers.io());
         })
         .repeat(repeatingCount)
-        .map(guid -> guid.toString())
+        .map(uuid -> uuid.toString())
         .toList()
         .toBlocking()
         .single();
@@ -260,15 +260,15 @@ public class TestObservableRepeating extends AbstractTest {
         
         strings = Observable.defer(()->{
           return  Observable.create(subscriber ->{
-              callableThreadName();
-              callSlowService();
-              subscriber.onNext(UUID.randomUUID());
+              showCallableThreadName();
+              UUID uuid = callSlowService();
+              subscriber.onNext(uuid);
               subscriber.onCompleted();
           }).subscribeOn(Schedulers.io());  
         })
         .subscribeOn(Schedulers.io())
         .repeat(repeatingCount, Schedulers.io())
-        .map(guid -> guid.toString())
+        .map(uuid -> uuid.toString())
         .toList()
         .toBlocking()
         .single();
@@ -288,7 +288,7 @@ public class TestObservableRepeating extends AbstractTest {
         
         Observable<UUID> slow = Observable.fromCallable(() -> {
             
-            callableThreadName();
+            showCallableThreadName();
             callSlowService();
             
             return UUID.randomUUID();
@@ -305,7 +305,7 @@ public class TestObservableRepeating extends AbstractTest {
         .single();
                 
         strings = Observable.merge(observables)
-        .map(guid -> guid.toString())
+        .map(uuid -> uuid.toString())
         .toList()
         .toBlocking()
         .single();

@@ -122,9 +122,7 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.fromCallable(() -> {
             
-            callSlowService();
-            
-            return UUID.randomUUID();
+            return  callSlowService();
         })
         .toBlocking()
         .single();
@@ -141,19 +139,17 @@ public class TestObservableBlocking extends AbstractTest {
         Set<String> stringSet = Sets.newLinkedHashSet();
         Observable<UUID> observable = Observable.fromCallable(() -> {
             
-            callSlowService();
-            
-            return UUID.randomUUID();
+            return callSlowService();
         });
         
         stringSet.add(observable
-                .map(guid -> guid.toString()) 
+                .map(uuid -> uuid.toString()) 
                 .toBlocking()
                 .single()
         );
         
         stringSet.add(observable
-                .map(guid -> guid.toString()) 
+                .map(uuid -> uuid.toString()) 
                 .toBlocking()
                 .single()
         );
@@ -171,19 +167,19 @@ public class TestObservableBlocking extends AbstractTest {
         
         Set<String> stringSet = Sets.newLinkedHashSet();
         Observable<UUID> observable = Observable.create(subscribier -> {
-            callSlowService();
-            subscribier.onNext(UUID.randomUUID());
+            UUID uuid = callSlowService();
+            subscribier.onNext(uuid);
             subscribier.onCompleted();
         });
         
         stringSet.add(observable
-                .map(guid -> guid.toString()) 
+                .map(uuid -> uuid.toString()) 
                 .toBlocking()
                 .single()
         );
         
         stringSet.add(observable
-                .map(guid -> guid.toString()) 
+                .map(uuid -> uuid.toString()) 
                 .toBlocking()
                 .single()
         );
@@ -202,9 +198,7 @@ public class TestObservableBlocking extends AbstractTest {
         Observable.defer(() -> {
             return Observable.fromCallable(() -> {
                 
-                callSlowService();
-                
-                return UUID.randomUUID();
+                return callSlowService();
             });
         })
         .toBlocking()
@@ -223,9 +217,7 @@ public class TestObservableBlocking extends AbstractTest {
         Observable.defer(() -> {
             return Observable.fromCallable(() -> {
                 
-                callSlowService();
-                
-                return UUID.randomUUID();
+                return callSlowService();
             });
         })
         .toBlocking()
@@ -242,15 +234,13 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.defer(() -> {
             
-            deferThreadName();
+            showDeferThreadName();
             
             return Observable.fromCallable(() -> {
                 
-                callableThreadName();
+                showCallableThreadName();
                 
-                callSlowService();
-                
-                return UUID.randomUUID();
+                return callSlowService();
             }).subscribeOn(Schedulers.io());
         })
         .toBlocking();
@@ -266,15 +256,13 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.defer(() -> {
             
-            deferThreadName();
+            showDeferThreadName();
             
             return Observable.fromCallable(() -> {
                 
-                callableThreadName();
+                showCallableThreadName();
                 
-                callSlowService();
-                
-                return UUID.randomUUID();
+                return callSlowService();
             }).observeOn(Schedulers.io());
             
         })
@@ -292,14 +280,14 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.defer(() -> {
             
-            deferThreadName();
+            showDeferThreadName();
             
             return Observable.fromCallable(() -> {
                 
-                callableThreadName();
+                showCallableThreadName();
                 
                 return UUID.randomUUID();
-            }).doOnNext(guid -> {
+            }).doOnNext(uuid -> {
                 
                 callSlowService();
                 
@@ -320,16 +308,16 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.defer(() -> {
             
-            deferThreadName();
+            showDeferThreadName();
             
             return Observable.fromCallable(() -> {
                 
-                callableThreadName();
+                showCallableThreadName();
                 
                 return UUID.randomUUID();
             })
             .observeOn(Schedulers.io())
-            .doOnNext(guid -> {
+            .doOnNext(uuid -> {
                 
                 // this part of the Observable will run in a thread 
                 observerThreadName();
@@ -352,11 +340,11 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.fromCallable(() -> {
             
-            callableThreadName();
+            showCallableThreadName();
         
             return UUID.randomUUID();
         })
-        .doOnNext(guid -> {
+        .doOnNext(uuid -> {
             
             // this part of the Observable will run in a thread 
             observerThreadName();
@@ -377,12 +365,12 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.fromCallable(() -> {
             
-            callableThreadName();
+            showCallableThreadName();
         
             return UUID.randomUUID();
         })
         .observeOn(Schedulers.io())
-        .doOnNext(guid -> {
+        .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
             observerThreadName();
             callSlowService();
@@ -401,13 +389,12 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.fromCallable(() -> {
             
-            callableThreadName();
-            callSlowService();
+            showCallableThreadName();
         
-            return UUID.randomUUID();
+            return callSlowService();
         })
         .subscribeOn(Schedulers.io())
-        .doOnNext(guid -> {
+        .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
             observerThreadName();
         })
@@ -425,12 +412,12 @@ public class TestObservableBlocking extends AbstractTest {
         
         Observable.fromCallable(() -> {
             
-            callableThreadName();
+            showCallableThreadName();
         
             return UUID.randomUUID();
         })
         .subscribeOn(Schedulers.io())
-        .doOnNext(guid -> {
+        .doOnNext(uuid -> {
             // this part of the Observable will run in a thread 
             observerThreadName();
             callSlowService();

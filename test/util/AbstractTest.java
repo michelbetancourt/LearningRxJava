@@ -1,6 +1,7 @@
 package util;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,11 +38,11 @@ public abstract class AbstractTest {
         return testWatcher.testName;
     }
     
-    protected void deferThreadName() {
+    protected void showDeferThreadName() {
         System.out.println(">" + testName() + " (defer)-> " + Thread.currentThread());
     }
     
-    protected void callableThreadName() {
+    protected void showCallableThreadName() {
         System.out.println(">" + testName() + " (callable)-> " + Thread.currentThread());
     }
     
@@ -49,12 +50,18 @@ public abstract class AbstractTest {
         System.out.println(">" + testName() + " (observer)-> " + Thread.currentThread());
     }
     
-    protected void callSlowService() {
+    protected UUID callSlowService() {
+        return callService(speedInMillis);
+    }
+    
+    protected UUID callService(long milliSpeed) {
         try {
-            Thread.sleep(speedInMillis);
+            Thread.sleep(milliSpeed);
         } catch (InterruptedException e) {
             throw new IllegalStateException(e);
         }
+        
+        return UUID.randomUUID();
     }
     
     protected void throwTestException(String message) {

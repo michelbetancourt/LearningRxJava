@@ -82,7 +82,7 @@ public class TestObservableFuture extends AbstractTest {
             Observable.fromCallable(()-> UUID.randomUUID())
                 .subscribeOn(Schedulers.io())
                 .delay(speedInMillis, TimeUnit.MILLISECONDS)
-                .doOnNext(guid -> future.complete(guid))
+                .doOnNext(uuid -> future.complete(uuid))
                 .subscribe();
             
             // wait the the future to complete here
@@ -90,9 +90,9 @@ public class TestObservableFuture extends AbstractTest {
             // for an Observable
             strings = Observable.from(future, Schedulers.io())
             .timeout(speedInMillis + speedInMillis / 2, TimeUnit.MILLISECONDS)
-            .map(guid -> {
-                callableThreadName();
-                return guid.toString();
+            .map(uuid -> {
+                showCallableThreadName();
+                return uuid.toString();
             })
             .toList()
             .toBlocking()
